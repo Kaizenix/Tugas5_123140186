@@ -22,6 +22,13 @@ Notes App adalah pengembangan dari aplikasi Profile UI sebelumnya. Aplikasi ini 
 |--------|--------------|-----------|-----------|-----------|
 | <img src="https://github.com/user-attachments/assets/7f9f79a6-cf65-4e0d-b4d6-80d2d998d166" width="250"/> | <img src="https://github.com/user-attachments/assets/31437c2e-f8c1-4f20-897b-8683f180621e" width="250"/> | <img src="https://github.com/user-attachments/assets/cbfbc30f-08dd-40c6-972f-5bc656b0e462" width="250"/> | <img src="https://github.com/user-attachments/assets/c72f4acb-2920-46ae-a1fb-7fddb4f833b8" width="250"/> | <img src="https://github.com/user-attachments/assets/cc9793fe-2415-4e9a-bc4d-47146e784890"  width="250"/> |
 
+## Video Demonstrasi
+https://github.com/user-attachments/assets/aa8931df-f383-4a38-873b-60a1a4625cb8
+
+
+
+
+
 ## Struktur Navigasi
 Aplikasi menggunakan **Navigation Compose** dengan rute sebagai berikut:
 - `notes`: Menampilkan daftar semua catatan.
