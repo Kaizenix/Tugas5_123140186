@@ -1,90 +1,72 @@
-# My Profile App (MVVM)
-Tugas Praktikum Pertemuan 4 — State & MVVM in Compose Multiplatform  
+# Notes App with Navigation (MVVM)
+
+Tugas Praktikum Pertemuan 5 — Navigation in Compose Multiplatform  
 IF25-22017 Pengembangan Aplikasi Mobile  
 Program Studi Teknik Informatika · Institut Teknologi Sumatera
 
 ## Deskripsi
-My Profile App adalah aplikasi multiplatform yang dikembangkan menggunakan Kotlin dan Compose Multiplatform dengan menerapkan arsitektur MVVM (Model-View-ViewModel). Aplikasi ini memungkinkan pengguna untuk melihat dan mengedit profil, serta mendukung fitur Dark Mode untuk meningkatkan pengalaman pengguna.
+Notes App adalah pengembangan dari aplikasi Profile UI sebelumnya. Aplikasi ini kini dilengkapi dengan fitur manajemen catatan (Notes) yang mencakup navigasi antar layar, penanganan argumen (`noteId`), dan Bottom Navigation yang modern. Aplikasi tetap mempertahankan identitas visual dari Profile App sebelumnya dengan tema hijau olive yang khas.
+
+## Fitur Utama
+- **Bottom Navigation:** 3 tab utama (Notes, Favorites, Profile) dengan gaya floating capsule yang modern.
+- **CRUD Notes:** Menambah, melihat detail, mengedit, dan menghapus catatan.
+- **Favorites System:** Menandai catatan sebagai favorit dan melihatnya di tab terpisah.
+- **Navigation with Arguments:** Berpindah antar layar dengan mengirimkan data `noteId`.
+- **Integrated Profile:** Fitur profil dari aplikasi sebelumnya diintegrasikan sebagai salah satu tab utama.
+- **Dark & Light Mode:** Dukungan penuh untuk tema terang dan gelap yang konsisten.
+- **Smooth Animations:** Transisi antar layar dan interaksi UI yang halus.
 
 ## Screenshot
 
-| Profile | Edit Profile | Dark Mode |
+*(Tambahkan screenshot aplikasi di sini)*
+
+| Notes List | Note Detail | Profile Tab |
 |--------|--------------|-----------|
-| <img src="https://github.com/user-attachments/assets/45eb9993-e14b-48c4-bb52-aaefdac56a7d" width="250"/> | <img src="https://github.com/user-attachments/assets/4a35d9c6-eea6-4fdd-9a6a-2e5db723aa7b" width="250"/> | <img src="https://github.com/user-attachments/assets/22937e3a-d5b1-458f-b4ff-54ad55114add" width="250"/> |
+| <img src="https://via.placeholder.com/250x500" width="250"/> | <img src="https://via.placeholder.com/250x500" width="250"/> | <img src="https://via.placeholder.com/250x500" width="250"/> |
 
-## Fitur
-- **MVVM Architecture:** Menggunakan ViewModel dan StateFlow untuk memisahkan UI dan logic.
-- **Reactive UI:** Tampilan otomatis berubah sesuai state menggunakan `collectAsState()`.
-- **Edit Profile:** Pengguna dapat mengubah nama dan bio secara langsung.
-- **State Hoisting:** State dikelola di parent composable dan dikirim ke child.
-- **Dark Mode Toggle:** Menggunakan Switch untuk mengubah tema terang dan gelap.
-- **Modern UI:** Menggunakan Material 3 dengan desain bersih dan responsif.
-- **Reusable Component:** Komponen seperti TextField dan InfoItem dapat digunakan ulang.
-
-## Struktur Composable Functions
-| File | Deskripsi |
-| :--- | :--- |
-| **App.kt** | Entry point aplikasi dan menghubungkan UI dengan ViewModel. |
-| **ProfileScreen.kt** | Menampilkan UI utama, meng-handle state dari ViewModel, dan menampilkan form edit. |
-| **ProfileHeader.kt** | Menampilkan nama dan bio pengguna. |
-| **ProfileCard.kt** | Container untuk informasi profil. |
-| **InfoItem.kt** | Menampilkan item informasi seperti email, phone, dan location. |
-| **Profile.kt** | Data class untuk model data profil. |
-| **ProfileViewModel.kt** | Mengelola state aplikasi menggunakan StateFlow. |
-| **ProfileUiState.kt** | Representasi state UI (nama, bio, dark mode). |
-| **Platform.kt** | Konfigurasi multiplatform bawaan. |
-
-## Komponen UI yang Digunakan
-| Komponen | Digunakan di |
-| :--- | :--- |
-| **Column** | Menyusun layout secara vertikal. |
-| **Row** | Menyusun item seperti InfoItem secara horizontal. |
-| **Card** | Menampilkan bio dan informasi dalam bentuk kartu. |
-| **Text** | Menampilkan data teks seperti nama dan bio. |
-| **TextField** | Input untuk edit nama dan bio. |
-| **Button** | Menyimpan perubahan profil. |
-| **Switch** | Toggle untuk Dark Mode. |
-| **Icon** | Ikon email, phone, dan location. |
+## Struktur Navigasi
+Aplikasi menggunakan **Navigation Compose** dengan rute sebagai berikut:
+- `notes`: Menampilkan daftar semua catatan.
+- `favorites`: Menampilkan catatan yang ditandai sebagai favorit.
+- `profile`: Menampilkan informasi profil pengguna (Legacy UI).
+- `add`: Form untuk menambahkan catatan baru.
+- `detail/{noteId}`: Menampilkan isi lengkap catatan berdasarkan ID.
+- `edit/{noteId}`: Form untuk mengubah isi catatan yang sudah ada.
 
 ## Teknologi
-- **Kotlin** — bahasa pemrograman utama.
-- **Compose Multiplatform** — framework UI deklaratif.
-- **Material 3** — desain UI modern.
-- **StateFlow** — pengelolaan state secara reaktif.
-- **ViewModel** — pemisahan logic dan UI.
+- **Kotlin** — Bahasa pemrograman utama.
+- **Compose Multiplatform** — Framework UI deklaratif.
+- **Jetpack Navigation** — Pengelolaan navigasi dan backstack.
+- **Material 3** — Komponen desain modern.
+- **ViewModel & StateFlow** — Arsitektur state management yang reaktif.
 
 ## Cara Menjalankan
 ### Android
 1. Buka proyek di **Android Studio**.
-2. Hubungkan perangkat atau jalankan emulator.
-3. Pilih konfigurasi **`androidApp`**.
-4. Klik tombol **Run (▶️)**.
+2. Pilih perangkat emulator atau fisik.
+3. Jalankan konfigurasi **`composeApp`**.
+4. Klik **Run (▶️)**.
 
 ### Desktop (JVM)
-Jalankan perintah berikut:
 ```bash
 ./gradlew :composeApp:run
 ```
 
-## Struktur File Utama
+## Struktur Proyek
 ```text
 composeApp/
 └── src/
     └── commonMain/
         └── kotlin/
             └── com/example/myprofileapp/
-                ├── data/
-                │   └── Profile.kt
-                ├── viewmodel/
-                │   ├── ProfileViewModel.kt
-                │   └── ProfileUiState.kt
+                ├── data/           # Data Model (Note)
+                ├── navigation/     # NavGraph & Routes
                 ├── ui/
-                │   ├── ProfileScreen.kt
-                │   ├── ProfileCard.kt
-                │   ├── ProfileHeader.kt
-                │   └── InfoItem.kt
-                ├── App.kt
-                └── Platform.kt
+                │   ├── components/ # Reusable UI (NavBar, Cards)
+                │   ├── screens/    # All Screen UI
+                │   └── theme/      # Colors & Typography
+                ├── viewmodel/      # Notes & Profile ViewModels
+                └── App.kt          # Entry Point
 ```
 
 ## Penulis
@@ -92,5 +74,3 @@ composeApp/
 - **NIM**: 123140186
 - **Kelas**: Pengembangan Aplikasi Mobile RB
 - **Institusi**: Institut Teknologi Sumatera
-
-

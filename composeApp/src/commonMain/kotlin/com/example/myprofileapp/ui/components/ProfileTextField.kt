@@ -1,4 +1,4 @@
-package com.example.myprofileapp
+package com.example.myprofileapp.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.OutlinedTextField

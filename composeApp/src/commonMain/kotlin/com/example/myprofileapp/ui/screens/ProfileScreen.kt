@@ -1,4 +1,4 @@
-package com.example.myprofileapp
+package com.example.myprofileapp.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myprofileapp.viewmodel.ProfileViewModel
+import com.example.myprofileapp.ui.components.ProfileTextField
 import org.jetbrains.compose.resources.painterResource
 import myprofileapp.composeapp.generated.resources.Res
 import myprofileapp.composeapp.generated.resources.*
@@ -29,23 +31,21 @@ import myprofileapp.composeapp.generated.resources.*
 fun ProfileScreen(viewModel: ProfileViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     
-    // Warna tema adaptif (Dark Mode)
-    val primaryColor = if (uiState.isDarkMode) Color(0xFF81C784) else Color(0xFF427A43)
-    val backgroundColor = if (uiState.isDarkMode) Color(0xFF121212) else Color.White
-    val cardColor = if (uiState.isDarkMode) Color(0xFF1E1E1E) else Color.White
-    val textColor = if (uiState.isDarkMode) Color.White else Color.Black
-    val secondaryColor = Color(0xFFF2E3BB)
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val backgroundColor = MaterialTheme.colorScheme.background
+    val cardColor = MaterialTheme.colorScheme.surface
+    val textColor = MaterialTheme.colorScheme.onBackground
+    val secondaryColor = MaterialTheme.colorScheme.secondaryContainer
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(primaryColor)
     ) {
-        // --- HEADER SECTION ---
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 60.dp)
+                .padding(horizontal = 24.dp, vertical = 40.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -54,13 +54,10 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
             ) {
                 Text(
                     text = "Profile\nInformation",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    lineHeight = 38.sp
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.White
                 )
                 
-                // Dark Mode Toggle
                 IconButton(onClick = { viewModel.toggleDarkMode() }) {
                     Icon(
                         imageVector = if (uiState.isDarkMode) Icons.Default.LightMode else Icons.Default.DarkMode,
@@ -71,11 +68,10 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
             }
         }
 
-        // --- CONTENT SECTION ---
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 220.dp),
+                .padding(top = 180.dp),
             color = backgroundColor,
             shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
         ) {
@@ -87,8 +83,7 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
                     .verticalScroll(rememberScrollState())
             ) {
                 if (uiState.isEditing) {
-                    // --- EDIT MODE ---
-                    Text("Edit Profile", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = textColor)
+                    Text("Edit Profile", style = MaterialTheme.typography.titleLarge, color = textColor)
                     Spacer(modifier = Modifier.height(16.dp))
                     
                     ProfileTextField(
@@ -112,7 +107,6 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
                         Text("Save Changes", color = Color.White)
                     }
                 } else {
-                    // --- DISPLAY MODE ---
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -141,7 +135,7 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
                     Text(text = uiState.bio, color = Color.Gray, lineHeight = 22.sp, fontSize = 15.sp)
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    Text("Contact Info", fontWeight = FontWeight.Bold, fontSize = 20.sp, color = textColor)
+                    Text("Contact Info", style = MaterialTheme.typography.titleLarge, color = textColor)
                     Spacer(modifier = Modifier.height(16.dp))
 
                     InfoFileItem(Icons.Default.Email, "Email", uiState.email, primaryColor, cardColor, textColor)
@@ -150,24 +144,23 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    Button(
-                        onClick = { viewModel.toggleFollow() },
-                        modifier = Modifier.fillMaxWidth().height(50.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (uiState.isFollowing) Color.Gray else primaryColor
-                        ),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Text(if (uiState.isFollowing) "Following" else "Follow", color = Color.White, fontWeight = FontWeight.Bold)
-                    }
+//                    Button(
+//                        onClick = { viewModel.toggleFollow() },
+//                        modifier = Modifier.fillMaxWidth().height(50.dp),
+//                        colors = ButtonDefaults.buttonColors(
+//                            containerColor = if (uiState.isFollowing) Color.Gray else primaryColor
+//                        ),
+//                        shape = RoundedCornerShape(16.dp)
+//                    ) {
+//                        Text(if (uiState.isFollowing) "Following" else "Follow", color = Color.White, fontWeight = FontWeight.Bold)
+//                    }
                 }
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(120.dp))
             }
         }
 
-        // --- FLOATING STATS & IMAGE ROW ---
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 220.dp).offset(y = (-40).dp).padding(horizontal = 24.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 180.dp).offset(y = (-40).dp).padding(horizontal = 24.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -177,17 +170,18 @@ fun ProfileScreen(viewModel: ProfileViewModel) {
                 shadowElevation = 8.dp,
                 color = cardColor
             ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    StatItem(uiState.following, "Following", primaryColor)
-                    Box(modifier = Modifier.width(1.dp).height(24.dp).background(Color.LightGray))
-                    StatItem(uiState.followers, "Followers", primaryColor)
-                    Box(modifier = Modifier.width(1.dp).height(24.dp).background(Color.LightGray))
-                    StatItem(uiState.likes, "Likes", primaryColor)
-                }
+//                Row(
+//                    modifier = Modifier.padding(horizontal = 12.dp),
+//                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+//                    verticalAlignment = Alignment.CenterVertically
+//                )
+//            {
+//                    StatItem(uiState.following, "Following", primaryColor)
+//                    Box(modifier = Modifier.width(1.dp).height(24.dp).background(Color.LightGray))
+//                    StatItem(uiState.followers, "Followers", primaryColor)
+//                    Box(modifier = Modifier.width(1.dp).height(24.dp).background(Color.LightGray))
+//                    StatItem(uiState.likes, "Likes", primaryColor)
+//                }
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -215,9 +209,10 @@ fun StatItem(count: String, label: String, color: Color) {
 @Composable
 fun InfoFileItem(icon: ImageVector, title: String, subtitle: String, themeColor: Color, cardColor: Color, textColor: Color) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).shadow(4.dp, RoundedCornerShape(16.dp)),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = cardColor),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Surface(shape = CircleShape, color = themeColor.copy(alpha = 0.1f), modifier = Modifier.size(40.dp)) {
